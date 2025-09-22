@@ -3,15 +3,14 @@ name: MAUI Unit Tests
 on:
   push:
     branches:
-      - main
-      - infra/runner-toevoegen
+      - '**'
   pull_request:
     branches:
-      - main
+      - '**'
 
 jobs:
   test:
-    runs-on: ubuntu-latest   # sneller en goedkoper dan macOS
+    runs-on: ubuntu-latest   # snel en stabiel
 
     steps:
       - name: Haal de repository op
@@ -22,9 +21,10 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Herstel afhankelijkheden
-        run: dotnet restore
+      - name: Herstel afhankelijkheden (negeer workloads)
+        run: dotnet restore --ignore-failed-sources
 
-      - name: Voer alleen .NET unit tests uit (geen iOS/Android)
-        run: dotnet test --framework net8.0 --configuration Release --verbosity normal
+      - name: Voer alleen .NET unit tests uit
+        run: dotnet test --framework net8.0 --no-restore --verbosity normal
+
 
