@@ -21,10 +21,11 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Herstel afhankelijkheden (negeer workloads)
-        run: dotnet restore --ignore-failed-sources
+      - name: Herstel afhankelijkheden (alleen testproject)
+        run: dotnet restore ./Grocery.Tests/Grocery.Tests.csproj
 
       - name: Voer alleen .NET unit tests uit
-        run: dotnet test --framework net8.0 --no-restore --verbosity normal
+        run: dotnet test ./Grocery.Tests/Grocery.Tests.csproj --framework net8.0 --configuration Release --verbosity normal
+
 
 
