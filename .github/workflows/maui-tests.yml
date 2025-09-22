@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest   # hier macOS gebruiken zodat iOS workloads mogelijk zijn
+    runs-on: ubuntu-latest   # sneller en goedkoper dan macOS
 
     steps:
       - name: Haal de repository op
@@ -22,14 +22,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Installeer MAUI workloads (iOS en Android)
-        run: dotnet workload install maui ios android
-
       - name: Herstel afhankelijkheden
         run: dotnet restore
 
-      - name: Bouw de applicatie
-        run: dotnet build --configuration Release --no-restore
+      - name: Voer alleen .NET unit tests uit (geen iOS/Android)
+        run: dotnet test --framework net8.0 --configuration Release --verbosity normal
 
-      - name: Voer unit tests uit
-        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
